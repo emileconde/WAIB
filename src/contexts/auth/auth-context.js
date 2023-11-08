@@ -1,11 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useState, useEffect } from "react";
-import { auth } from "../../services/firebase/firebase-service";
+import app from "../../services/firebase/firebase-service";
+
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
+  getAuth,
 } from "firebase/auth";
 
 export const AuthContext = createContext({
@@ -14,6 +16,8 @@ export const AuthContext = createContext({
   logout: async () => {},
   signUp: async () => {},
 });
+
+const auth = getAuth(app);
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
