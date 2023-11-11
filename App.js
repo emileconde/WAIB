@@ -1,24 +1,17 @@
-import {
-  View,
-  TextInput,
-  Button,
-  Alert,
-  StyleSheet,
-  StatusBar,
-} from "react-native";
+import { StyleSheet, StatusBar, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthProvider } from "./src/contexts/auth/auth-context";
-import { AuthStackNavigator } from "./src/route/navigation/auth/auth-navigation";
 import AppNav from "./src/route/navigation/nav/app-nav";
+import { AppProvider } from "./src/contexts/app/app-context";
 
 export default function App() {
   return (
     <AuthProvider>
-      <SafeAreaView style={styles.container}>
-        <AuthProvider>
+      <AppProvider>
+        <SafeAreaView style={styles.container}>
           <AppNav />
-        </AuthProvider>
-      </SafeAreaView>
+        </SafeAreaView>
+      </AppProvider>
     </AuthProvider>
   );
 }
