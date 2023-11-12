@@ -12,6 +12,7 @@ const InputForm = ({
   const [type, setType] = useState("");
   const [amount, setAmount] = useState("");
   const [frequency, setFrequency] = useState("weekly");
+
   //This can be want or need. Change if you're more creative.
   const [want, setWant] = useState("want");
 
@@ -29,8 +30,6 @@ const InputForm = ({
 
   return (
     <View style={styles.container}>
-      <Text>{`${screenName} Screen`}</Text>
-      <Text>{`${screenName} Type`}</Text>
       <TextInput
         style={styles.input}
         placeholder="primary"
@@ -114,6 +113,7 @@ const InputForm = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginBottom: 50,
   },
 });
 

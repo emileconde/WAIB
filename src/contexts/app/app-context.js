@@ -8,15 +8,22 @@ import {
   query,
   where,
   doc,
+  updateDoc,
+  deleteDoc,
+  getFirestore,
+  onSnapshot,
 } from "firebase/firestore";
 
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
 
 export const AppContext = createContext({
   currentUser: null,
+
+  startRealTimeListener: () => {},
   getUserData: async () => {},
   addUserData: async () => {},
+  updateUserData: async () => {},
+  deleteUserData: async () => {},
 });
 
 const auth = getAuth(app);
@@ -62,13 +69,59 @@ export const AppProvider = ({ children }) => {
       querySnapshot.forEach((doc) => {
         data.push({ id: doc.id, ...doc.data() });
       });
-      return data;
+      //console.log("Setting user Data: ", data);
+      //setUserData(data);
     } catch (e) {
       console.error("Error getting documents: ", e);
     }
   };
 
-  const value = { currentUser, addUserData, getUserData };
+  // Function to update user data
+  const updateUserData = async (uid, screenType, documentId, data) => {
+    try {
+      const docRef = doc(db, "users", uid, screenType, documentId);
+      await updateDoc(docRef, data);
+      console.log("Document updated with ID: ", documentId);
+    } catch (e) {
+      console.error("Error updating document: ", e);
+    }
+  };
+
+  // Function to delete user data
+  const deleteUserData = async (uid, screenType, documentId) => {
+    try {
+      const docRef = doc(db, "users", uid, screenType, documentId);
+      await deleteDoc(docRef);
+      console.log("Document deleted with ID: ", documentId);
+    } catch (e) {
+      console.log("Error deleting document: ", e);
+    }
+  };
+
+  const startRealTimeListener = (uid, screenType, callback) => {
+    return onSnapshot(
+      collection(db, "users", uid, screenType),
+      (snapshot) => {
+        const newData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        callback(newData);
+      },
+      (error) => {
+        console.log("Error fetching real-time data:", error); // Log any errors
+      }
+    );
+  };
+
+  const value = {
+    currentUser,
+    addUserData,
+    getUserData,
+    updateUserData,
+    deleteUserData,
+    startRealTimeListener,
+  };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
