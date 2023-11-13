@@ -1,4 +1,5 @@
-import { StyleSheet, StatusBar, View, Text } from "react-native";
+import React from "react";
+import { StyleSheet, StatusBar, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthProvider } from "./src/contexts/auth/auth-context";
 import AppNav from "./src/route/navigation/nav/app-nav";

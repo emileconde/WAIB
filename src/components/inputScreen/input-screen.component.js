@@ -1,9 +1,17 @@
 import { useContext, useState, useEffect } from "react";
-import { View, StyleSheet, KeyboardAvoidingView, Button } from "react-native";
+import {
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Button,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import { AppContext } from "../../contexts/app/app-context";
 import InputForm from "../../components/inputForm/input-form.component";
 import DataList from "../../components/dataList/DataList";
 import { ActivityIndicator } from "react-native";
+import PALETTE from "../../util/palette";
 
 const InputScreen = ({ screenType, screenName, isExpense }) => {
   const { currentUser, addUserData, deleteUserData, startRealTimeListener } =
@@ -40,17 +48,21 @@ const InputScreen = ({ screenType, screenName, isExpense }) => {
       behavior={Platform.OS == "ios" ? "padding" : "height"}
       enabled={false}
     >
-      <Button title={showForm ? "-" : "+"} onPress={toggleForm} />
+      <TouchableOpacity style={styles.addButton} onPress={toggleForm}>
+        <Text style={styles.addText}>{showForm ? "-" : "+"}</Text>
+      </TouchableOpacity>
+
       {showForm && (
         <InputForm
           screenName={screenName}
           screenType={screenType}
           uid={currentUser.uid}
           addUserdata={addUserData}
+          isExpense={isExpense}
         />
       )}
       {isLoading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color={PALETTE.accent.warmOrange} />
       ) : (
         <DataList
           data={data}
@@ -67,6 +79,24 @@ const InputScreen = ({ screenType, screenName, isExpense }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  addButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 5,
+  },
+  addText: {
+    color: PALETTE.primary.darkBlue,
+    fontSize: 25,
+    fontWeight: "bold",
+    borderWidth: 1.5,
+    borderColor: PALETTE.primary.darkBlue,
+    height: 30,
+    width: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    textAlignVertical: "center",
   },
 });
 

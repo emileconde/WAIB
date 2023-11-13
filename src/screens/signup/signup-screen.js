@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   loginActionText: {
-    color: PALETTE.primary.darkBlue,
+    color: PALETTE.secondary.softGreen,
     fontSize: 12,
   },
 });

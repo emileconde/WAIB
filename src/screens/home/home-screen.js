@@ -15,7 +15,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.navigateText}>Navigate</Text>
+      {/* <Text style={styles.navigateText}>Navigate</Text> */}
       <NavigationList navigation={navigation} />
     </View>
   );

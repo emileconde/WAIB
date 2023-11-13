@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   signUpActionText: {
-    color: PALETTE.primary.darkBlue,
+    color: PALETTE.secondary.softGreen,
     fontSize: 12,
   },
   passwordInput: {
