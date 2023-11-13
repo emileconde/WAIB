@@ -4,12 +4,24 @@ import ExpensesScreen from "../../../screens/expenses/expenses-screen";
 import IncomeScreen from "../../../screens/income/income-screen";
 import SavingsScreen from "../../../screens/savings/savings-screen";
 import GraphScreen from "../../../screens/graph/graph-screen";
+import PALETTE from "../../../util/palette";
 
 const AppStack = createStackNavigator();
 
 export const AppStackNavigator = () => {
   return (
-    <AppStack.Navigator initialRouteName="home-screen">
+    <AppStack.Navigator
+      initialRouteName="home-screen"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: PALETTE.primary.darkBlue,
+        },
+        headerTintColor: PALETTE.neutral.white,
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+      }}
+    >
       <AppStack.Screen
         name="home-screen"
         component={HomeScreen}

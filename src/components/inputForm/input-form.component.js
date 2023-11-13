@@ -12,20 +12,31 @@ const InputForm = ({
   const [type, setType] = useState("");
   const [amount, setAmount] = useState("");
   const [frequency, setFrequency] = useState("weekly");
+  const [isErrorTextVisisble, setIsErrorTextvisisble] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   //This can be want or need. Change if you're more creative.
   const [want, setWant] = useState("want");
 
   const handleSave = async () => {
-    const userData =
-      isExpense == true
-        ? { type, amount, frequency, want }
-        : { type, amount, frequency };
-    addUserdata(uid, screenType, userData);
-    setAmount("");
-    setType("");
-    setFrequency("Weekly");
-    setWant("want");
+    if (type === "" || amount === "") {
+      setIsErrorTextvisisble(true);
+      setErrorMessage("Please make sure to fillout every input field.");
+      setTimeout(() => {
+        setIsErrorTextvisisble(false);
+      }, 3000);
+      return;
+    } else {
+      const userData =
+        isExpense == true
+          ? { type, amount, frequency, want }
+          : { type, amount, frequency };
+      addUserdata(uid, screenType, userData);
+      setAmount("");
+      setType("");
+      setFrequency("weekly");
+      setWant("want");
+    }
   };
 
   return (
@@ -35,7 +46,7 @@ const InputForm = ({
         placeholder="primary"
         value={type}
         onChangeText={setType}
-        keyboardType="email-address"
+        keyboardType="default"
         autoCapitalize="none"
       />
       <Text>Amount</Text>
@@ -44,7 +55,7 @@ const InputForm = ({
         placeholder="50000"
         value={amount}
         onChangeText={setAmount}
-        keyboardType="email-address"
+        keyboardType="number-pad"
         autoCapitalize="none"
       />
       <Text>Frequency</Text>
@@ -105,15 +116,18 @@ const InputForm = ({
           </RadioButton.Group>
         </View>
       ) : null}
+      {isErrorTextVisisble && (
+        <Text style={styles.errorText}>{errorMessage}</Text>
+      )}
       <Button title="Submit" onPress={handleSave} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginBottom: 50,
+  container: {},
+  errorText: {
+    color: "#E07A5F",
   },
 });
 

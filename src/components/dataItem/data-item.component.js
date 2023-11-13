@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import PALETTE from "../../util/palette";
 
 const DataItem = ({
   uid,
@@ -26,7 +27,7 @@ const DataItem = ({
           onDelete(uid, screenType, id);
         }}
       >
-        <AntDesign name="delete" size={24} color="red" />
+        <AntDesign name="delete" size={24} color={PALETTE.accent.warmOrange} />
       </TouchableOpacity>
     </View>
   );
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    color: "#333",
+    color: PALETTE.neutral.darkGrey,
   },
 });
 
