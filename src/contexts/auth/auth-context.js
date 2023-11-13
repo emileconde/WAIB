@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
+  // This makes more sense on the profile page
   const logout = () => {
     return signOut(auth);
   };

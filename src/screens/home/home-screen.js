@@ -1,56 +1,39 @@
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../contexts/auth/auth-context";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList } from "react-native";
 import { AppContext } from "../../contexts/app/app-context";
+import PALETTE from "../../util/palette";
+import NavigationItem from "../../components/navigationItem/navigation-item.component";
+import NavigationList from "../../components/navigationItemList/navigation-item-list.component";
 
 const HomeScreen = ({ navigation }) => {
-  //const { loadUserIncomes } = useContext(AppContext);
+  const { logout } = useContext(AuthContext);
 
   // useEffect(() => {
-  //   loadUserIncomes();
+  //   logout();
   // }, []);
 
-  const { logout } = useContext(AuthContext);
   return (
     <View style={styles.container}>
-      <Text>Home Screen</Text>
-      <Button
-        title="Log out"
-        onPress={() => {
-          logout();
-        }}
-      />
-      <Button
-        title="Expenses"
-        onPress={() => {
-          navigation.navigate("expenses-screen");
-        }}
-      />
-      <Button
-        title="Income"
-        onPress={() => {
-          navigation.navigate("income-screen");
-        }}
-      />
-      <Button
-        title="Savings"
-        onPress={() => {
-          navigation.navigate("savings-screen");
-        }}
-      />
-      <Button
-        title="Graphs"
-        onPress={() => {
-          navigation.navigate("graph-screen");
-        }}
-      />
+      <Text style={styles.navigateText}>Navigate</Text>
+      <NavigationList navigation={navigation} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    gap: 25,
+    flex: 1,
+    backgroundColor: PALETTE.neutral.lightGrey,
+    justifyContent: "space-around",
+    gap: 10,
+  },
+  navigateText: {
+    color: PALETTE.neutral.darkGrey,
+    fontSize: 25,
+    fontWeight: "bold",
+    marginTop: 10,
+    alignSelf: "center",
   },
 });
 

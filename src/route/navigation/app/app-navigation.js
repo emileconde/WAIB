@@ -5,6 +5,7 @@ import IncomeScreen from "../../../screens/income/income-screen";
 import SavingsScreen from "../../../screens/savings/savings-screen";
 import GraphScreen from "../../../screens/graph/graph-screen";
 import PALETTE from "../../../util/palette";
+import CalendarScreen from "../../../screens/calendar/calendar-screen";
 
 const AppStack = createStackNavigator();
 
@@ -45,6 +46,11 @@ export const AppStackNavigator = () => {
       <AppStack.Screen
         name="graph-screen"
         component={GraphScreen}
+        options={{ title: "Graph" }}
+      />
+      <AppStack.Screen
+        name="calendar-screen"
+        component={CalendarScreen}
         options={{ title: "Graph" }}
       />
     </AppStack.Navigator>
