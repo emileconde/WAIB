@@ -4,6 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthProvider } from "./src/contexts/auth/auth-context";
 import AppNav from "./src/route/navigation/nav/app-nav";
 import { AppProvider } from "./src/contexts/app/app-context";
+import Toast, { BaseToast } from "react-native-toast-message";
+import PALETTE from "./src/util/palette";
 
 export default function App() {
   return (
@@ -11,6 +13,7 @@ export default function App() {
       <AppProvider>
         <SafeAreaView style={styles.container}>
           <AppNav />
+          <Toast />
         </SafeAreaView>
       </AppProvider>
     </AuthProvider>
@@ -21,6 +24,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight,
-    backgroundColor: "#fff",
+    backgroundColor: PALETTE.neutral.lightGrey,
   },
 });

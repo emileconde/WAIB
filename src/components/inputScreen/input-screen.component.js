@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
   KeyboardAvoidingView,
-  Button,
   TouchableOpacity,
   Text,
   ActivityIndicator,
@@ -24,18 +23,16 @@ const InputScreen = ({ screenType, screenName, isExpense }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    // const unsubscribe = startRealTimeListener(currentUser.uid, SCREEN_TYPE);
+
     const unsubscribe = startRealTimeListener(
       currentUser.uid,
       screenType,
       (newData) => {
-        //console.log("New data:", newData);
         setData(newData);
         setIsLoading(false);
       }
     );
 
-    //setIsLoading(false);
     return () => unsubscribe();
   }, [currentUser.uid, startRealTimeListener]);
 
@@ -63,7 +60,9 @@ const InputScreen = ({ screenType, screenName, isExpense }) => {
         />
       )}
       {isLoading ? (
-        <ActivityIndicator size="large" color={PALETTE.accent.warmOrange} />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={PALETTE.accent.warmOrange} />
+        </View>
       ) : (
         <DataList
           data={data}
@@ -80,6 +79,11 @@ const InputScreen = ({ screenType, screenName, isExpense }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   addButton: {
     alignItems: "center",

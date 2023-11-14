@@ -29,7 +29,9 @@ const DataItem = ({
             }
             style={styles.image}
           />
-          <Text style={styles.text}>{capitalizeFirstLetter(type)}</Text>
+          <Text style={[styles.text, styles.type]}>
+            {capitalizeFirstLetter(type)}
+          </Text>
         </View>
         <View style={styles.row}>
           <Image
@@ -92,6 +94,10 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     color: PALETTE.neutral.darkGrey,
+  },
+  type: {
+    fontWeight: "bold",
+    color: PALETTE.secondary.softGreen,
   },
   row: {
     flexDirection: "row",

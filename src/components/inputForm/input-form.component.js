@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { RadioButton } from "react-native-paper";
 import PALETTE from "../../util/palette";
+import { capitalizeFirstLetter } from "./../../util/utils";
 
 const InputForm = ({
   screenName,
@@ -25,7 +26,7 @@ const InputForm = ({
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  //This can be want or need. 'want' by default. Change if you're more creative.
+  //This variable can be want or need. 'want' by default. Change if you're more creative.
   const [want, setWant] = useState("want");
 
   const handleSave = async () => {
@@ -43,7 +44,7 @@ const InputForm = ({
           : { type, amount, frequency };
       addUserdata(uid, screenType, userData);
       setIsSuccessTextVisisble(true);
-      setSuccessMessage(`${type} successfuly saved.`);
+      setSuccessMessage(`${capitalizeFirstLetter(type)} successfuly saved.`);
       setTimeout(() => {
         setIsSuccessTextVisisble(false);
       }, 3000);

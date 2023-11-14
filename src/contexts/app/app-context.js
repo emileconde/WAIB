@@ -4,6 +4,7 @@ import app from "../../services/firebase/firebase-service";
 import {
   collection,
   addDoc,
+  getDoc,
   getDocs,
   query,
   where,
@@ -15,6 +16,9 @@ import {
 } from "firebase/firestore";
 
 import { getAuth } from "firebase/auth";
+import Toast from "react-native-toast-message";
+import { capitalizeFirstLetter } from "../../util/utils";
+import PALETTE from "../../util/palette";
 
 export const AppContext = createContext({
   currentUser: null,
@@ -87,14 +91,31 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  // Function to delete user data
   const deleteUserData = async (uid, screenType, documentId) => {
     try {
       const docRef = doc(db, "users", uid, screenType, documentId);
-      await deleteDoc(docRef);
-      console.log("Document deleted with ID: ", documentId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const docData = docSnap.data();
+        const title = docData.type;
+        await deleteDoc(docRef);
+        console.log("Document deleted with ID: ", documentId);
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: `${capitalizeFirstLetter(title)} was deleted successfully!`,
+          style: { borderLeftColor: "pink" },
+        });
+      } else {
+        console.log("No such document!");
+      }
     } catch (e) {
       console.log("Error deleting document: ", e);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Something went wrong, please try again.",
+      });
     }
   };
 
