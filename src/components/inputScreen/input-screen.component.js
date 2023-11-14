@@ -6,11 +6,12 @@ import {
   Button,
   TouchableOpacity,
   Text,
+  ActivityIndicator,
 } from "react-native";
 import { AppContext } from "../../contexts/app/app-context";
 import InputForm from "../../components/inputForm/input-form.component";
 import DataList from "../../components/dataList/DataList";
-import { ActivityIndicator } from "react-native";
+
 import PALETTE from "../../util/palette";
 
 const InputScreen = ({ screenType, screenName, isExpense }) => {
