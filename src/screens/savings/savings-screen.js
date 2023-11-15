@@ -1,9 +1,16 @@
+import {
+  SAVINGS_SCREEN_NAME,
+  SAVINGS_SCREEN_TYPE,
+} from "../../../assets/static/constants";
 import InputScreen from "../../components/inputScreen/input-screen.component";
 
-const SCREEN_TYPE = "savings";
-const SCREEN_NAME = "Savings";
 const SavingsScreen = ({ navigation }) => {
-  return <InputScreen screenName={SCREEN_NAME} screenType={SCREEN_TYPE} />;
+  return (
+    <InputScreen
+      screenName={SAVINGS_SCREEN_NAME}
+      screenType={SAVINGS_SCREEN_TYPE}
+    />
+  );
 };
 
 export default SavingsScreen;

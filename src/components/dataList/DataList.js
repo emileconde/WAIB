@@ -18,6 +18,7 @@ const DataList = ({ data, uid, screenType, isExpense }) => {
               amount={item.amount}
               frequency={item.frequency}
               want={item.want}
+              group={item.group}
               uid={uid}
               screenType={screenType}
               onDelete={deleteUserData}

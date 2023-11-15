@@ -1,12 +1,11 @@
+import { EXPENSES_SCREEN_NAME } from "../../../assets/static/constants";
 import InputScreen from "../../components/inputScreen/input-screen.component";
 
-const SCREEN_TYPE = "expenses";
-const SCREEN_NAME = "Expenses";
 const ExpensesScreen = ({ navigation }) => {
   return (
     <InputScreen
-      screenName={SCREEN_NAME}
-      screenType={SCREEN_TYPE}
+      screenName={EXPENSES_SCREEN_NAME}
+      screenType={EXPENSES_SCREEN_NAME}
       isExpense={true}
     />
   );

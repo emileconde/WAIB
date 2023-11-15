@@ -64,7 +64,6 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  // Function to get data (income, expenses, savings)
   const getUserData = async (uid, screenType) => {
     try {
       const q = query(collection(db, "users", uid, screenType));
@@ -73,14 +72,15 @@ export const AppProvider = ({ children }) => {
       querySnapshot.forEach((doc) => {
         data.push({ id: doc.id, ...doc.data() });
       });
-      //console.log("Setting user Data: ", data);
-      //setUserData(data);
+      return data; // Return the aggregated data
     } catch (e) {
       console.error("Error getting documents: ", e);
+      return []; // Return an empty array or handle the error as needed
     }
   };
 
-  // Function to update user data
+  // Function to update user data. Currently does not have an update functionality but if you'd like to add one
+  // All you have to do is use this one. Everything else is taken care of.
   const updateUserData = async (uid, screenType, documentId, data) => {
     try {
       const docRef = doc(db, "users", uid, screenType, documentId);
@@ -104,7 +104,6 @@ export const AppProvider = ({ children }) => {
           type: "success",
           text1: "Success",
           text2: `${capitalizeFirstLetter(title)} was deleted successfully!`,
-          style: { borderLeftColor: "pink" },
         });
       } else {
         console.log("No such document!");

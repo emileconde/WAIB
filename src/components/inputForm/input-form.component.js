@@ -9,15 +9,13 @@ import {
 } from "react-native";
 import { RadioButton } from "react-native-paper";
 import PALETTE from "../../util/palette";
-import { capitalizeFirstLetter } from "./../../util/utils";
+import {
+  capitalizeFirstLetter,
+  provideDropDownOptions,
+} from "./../../util/utils";
+import RNPickerSelect from "react-native-picker-select";
 
-const InputForm = ({
-  screenName,
-  screenType,
-  uid,
-  addUserdata,
-  isExpense = false,
-}) => {
+const InputForm = ({ screenType, uid, addUserdata, isExpense = false }) => {
   const [type, setType] = useState("");
   const [amount, setAmount] = useState("");
   const [frequency, setFrequency] = useState("weekly");
@@ -25,14 +23,20 @@ const InputForm = ({
   const [isSuccessTextVisisble, setIsSuccessTextVisisble] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-
+  const [group, setGroup] = useState(null);
   //This variable can be want or need. 'want' by default. Change if you're more creative.
-  const [want, setWant] = useState("want");
+  const [want, setWant] = useState("Want");
+  const [dropdownKey, setDropdownKey] = useState(1);
+
+  const resetDropdown = () => {
+    setGroup(null);
+    setDropdownKey((prevKey) => prevKey + 1); // Increment the key to force remount
+  };
 
   const handleSave = async () => {
-    if (type === "" || amount === "") {
+    if (type === "" || amount === "" || group == null) {
       setIsErrorTextvisisble(true);
-      setErrorMessage("Please, fillout every input field.");
+      setErrorMessage("Please, fill out every input field.");
       setTimeout(() => {
         setIsErrorTextvisisble(false);
       }, 3000);
@@ -40,14 +44,15 @@ const InputForm = ({
     } else {
       const userData =
         isExpense == true
-          ? { type, amount, frequency, want }
-          : { type, amount, frequency };
+          ? { type, amount, frequency, want, group }
+          : { type, amount, frequency, group };
       addUserdata(uid, screenType, userData);
       setIsSuccessTextVisisble(true);
       setSuccessMessage(`${capitalizeFirstLetter(type)} successfuly saved.`);
       setTimeout(() => {
         setIsSuccessTextVisisble(false);
       }, 3000);
+      resetDropdown();
       setAmount("");
       setType("");
       setFrequency("weekly");
@@ -56,10 +61,10 @@ const InputForm = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} key={dropdownKey}>
       <TextInput
         style={styles.inputBase}
-        placeholder="Type"
+        placeholder="Title"
         value={type}
         onChangeText={setType}
         keyboardType="default"
@@ -141,6 +146,19 @@ const InputForm = ({
       {isSuccessTextVisisble && (
         <Text style={styles.successText}>{successMessage}</Text>
       )}
+      <RNPickerSelect
+        onValueChange={(value) => setGroup(value)}
+        items={provideDropDownOptions(screenType)}
+        placeholder={{
+          label: "Select a group...",
+          value: null,
+          color: PALETTE.neutral.darkGrey,
+        }}
+        style={{
+          inputIOS: styles.groupDropdown,
+          inputAndroid: styles.groupDropdown,
+        }}
+      />
       <TouchableOpacity style={styles.submitButton} onPress={handleSave}>
         <Text style={styles.submitText}>Submit</Text>
       </TouchableOpacity>
@@ -185,6 +203,16 @@ const styles = StyleSheet.create({
     color: PALETTE.neutral.darkGrey,
     backgroundColor: PALETTE.neutral.white,
     fontSize: 13,
+  },
+  groupDropdown: {
+    // Define the width and other styles for the dropdown
+    width: 280, // Set the width here
+    padding: 10,
+    borderWidth: 1.5,
+    borderColor: PALETTE.primary.darkBlue,
+    borderRadius: 4,
+    alignSelf: "center",
+    paddingRight: 30,
   },
 });
 

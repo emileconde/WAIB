@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import PALETTE from "../../util/palette";
-import LogoAnimation from "../../components/logo-animation/logo-animation.component";
+import LogoAnimation from "../../components/logoAnimation/logo-animation.component";
 import BackgroundImage from "../../components/backgroungImage/background-image";
 
 const InfoScreen = ({ navigation }) => {

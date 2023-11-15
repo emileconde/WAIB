@@ -10,7 +10,6 @@ import {
 import { AppContext } from "../../contexts/app/app-context";
 import InputForm from "../../components/inputForm/input-form.component";
 import DataList from "../../components/dataList/DataList";
-
 import PALETTE from "../../util/palette";
 
 const InputScreen = ({ screenType, screenName, isExpense }) => {
@@ -29,6 +28,7 @@ const InputScreen = ({ screenType, screenName, isExpense }) => {
       screenType,
       (newData) => {
         setData(newData);
+        console.log(newData);
         setIsLoading(false);
       }
     );

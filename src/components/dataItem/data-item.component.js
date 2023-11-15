@@ -3,6 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import PALETTE from "../../util/palette";
 import { capitalizeFirstLetter, formatMoney } from "../../util/utils";
+import {
+  EXPENSES_SCREEN_TYPE,
+  INCOME_SCREEN_TYPE,
+} from "../../../assets/static/constants";
 
 const DataItem = ({
   uid,
@@ -10,6 +14,7 @@ const DataItem = ({
   type,
   amount,
   frequency,
+  group,
   want = "",
   screenType,
   onDelete,
@@ -21,9 +26,9 @@ const DataItem = ({
         <View style={styles.row}>
           <Image
             source={
-              screenType.startsWith("i")
+              screenType === INCOME_SCREEN_TYPE
                 ? require("../../../assets/income-icon.png")
-                : screenType.startsWith("e")
+                : screenType === EXPENSES_SCREEN_TYPE
                 ? require("../../../assets/expenses-icon.png")
                 : require("../../../assets/savings-icon.png")
             }
@@ -53,7 +58,7 @@ const DataItem = ({
           <View style={styles.row}>
             <Image
               source={
-                want.startsWith("W")
+                want.startsWith("W") // Want
                   ? require("../../../assets/want-icon.png")
                   : require("../../../assets/need-icon.png")
               }
@@ -62,6 +67,13 @@ const DataItem = ({
             <Text style={styles.text}>{want}</Text>
           </View>
         ) : null}
+        <View style={styles.row}>
+          <Image
+            source={require("../../../assets/group-icon.png")}
+            style={styles.image}
+          />
+          <Text style={styles.text}>{capitalizeFirstLetter(group)}</Text>
+        </View>
       </View>
       <TouchableOpacity
         onPress={() => {
