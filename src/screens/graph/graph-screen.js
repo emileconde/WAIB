@@ -9,34 +9,63 @@ import {
   ScrollView,
 } from "react-native";
 import { AppContext } from "../../contexts/app/app-context";
-import { capitalizeFirstLetter, parseData } from "../../util/utils";
-import { INCOME_SCREEN_TYPE } from "../../../assets/static/constants";
+import {
+  capitalizeFirstLetter,
+  getScreenName,
+  parseData,
+} from "../../util/utils";
+import {
+  EXPENSES_SCREEN_TYPE,
+  INCOME_SCREEN_TYPE,
+  SAVINGS_SCREEN_TYPE,
+} from "../../../assets/static/constants";
 import PALETTE from "../../util/palette";
+import SegmentedControlTab from "react-native-segmented-control-tab";
 
 const GraphScreen = () => {
   const { currentUser, getUserData } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(null);
-
+  const [selectedTypeToDisplay, setselectedTypeToDisplay] = useState(0);
   const [chartData, setChartData] = useState([]);
   const [legendData, setLegendData] = useState([]);
+  const [isDataReturned, setIsDataReturned] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const userData = await getUserData(currentUser.uid, INCOME_SCREEN_TYPE);
-        const { chartData, legendData } = parseData(userData);
-        setChartData(chartData);
-        setLegendData(legendData);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
-    };
+    fetchData(INCOME_SCREEN_TYPE);
+  }, [currentUser.uid]);
 
-    fetchData();
-  }, [currentUser.uid, INCOME_SCREEN_TYPE]);
+  const handleTypeChange = (index) => {
+    setselectedTypeToDisplay(index);
+    switch (index) {
+      case 0:
+        fetchData(INCOME_SCREEN_TYPE);
+
+        break;
+      case 1:
+        fetchData(SAVINGS_SCREEN_TYPE);
+
+        break;
+      case 2:
+        fetchData(EXPENSES_SCREEN_TYPE);
+
+        break;
+    }
+  };
+
+  const fetchData = async (screenType) => {
+    try {
+      setIsLoading(true);
+      const userData = await getUserData(currentUser.uid, screenType);
+      setIsDataReturned(userData.length > 0);
+      const { chartData, legendData } = parseData(userData);
+      setChartData(chartData);
+      setLegendData(legendData);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
+  };
 
   const handlePiePress = (event, { index }) => {
     //console.log(`Segment pressed: ${index}`);
@@ -81,43 +110,71 @@ const GraphScreen = () => {
   );
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
+      <SegmentedControlTab
+        values={["Incomes", "Savings/Investments", "Expenses"]}
+        selectedIndex={selectedTypeToDisplay}
+        onTabPress={handleTypeChange}
+        tabsContainerStyle={{
+          backgroundColor: PALETTE.neutral.lightGrey,
+        }}
+        tabStyle={{
+          borderColor: PALETTE.neutral.lightGrey,
+          backgroundColor: PALETTE.neutral.lightGrey,
+          borderRadius: 0,
+        }}
+        activeTabStyle={{
+          backgroundColor: PALETTE.accent.warmOrange,
+        }}
+        tabTextStyle={{ color: PALETTE.neutral.darkGrey }}
+        activeTabTextStyle={{ color: PALETTE.neutral.lightGrey }}
+      />
       {isLoading ? (
-        <View style={styles.loadingContainer}>
+        <View style={styles.container}>
           <ActivityIndicator size="large" color={PALETTE.accent.warmOrange} />
         </View>
+      ) : isDataReturned == false ? (
+        <View style={styles.container}>
+          <Text style={styles.noDataText}>{`Please add some ${getScreenName(
+            selectedTypeToDisplay
+          )}`}</Text>
+        </View>
       ) : (
-        <TouchableOpacity onPressIn={handlePiePress}>
-          <VictoryPie
-            data={chartData}
-            labelRadius={({ innerRadius }) => innerRadius + 25}
-            labelComponent={<RenderLabel />}
-            style={{
-              data: {
-                fill: ({ datum }) => datum.color,
-                stroke: ({ index }) =>
-                  index === activeIndex ? "black" : "none",
-                strokeWidth: ({ index }) => (index === activeIndex ? 3 : 0),
-              },
-              labels: { fill: "white", fontSize: 10, fontWeight: "bold" },
-            }}
-            events={[
-              {
-                target: "data",
-                eventHandlers: {
-                  onPressIn: handlePiePress,
-                },
-              },
-            ]}
-            animate={{
-              duration: 500,
-            }}
-          />
-        </TouchableOpacity>
+        <ScrollView>
+          <>
+            <TouchableOpacity onPressIn={handlePiePress}>
+              <VictoryPie
+                data={chartData}
+                labelRadius={({ innerRadius }) => innerRadius + 25}
+                labelComponent={<RenderLabel />}
+                style={{
+                  data: {
+                    fill: ({ datum }) => datum.color,
+                    stroke: ({ index }) =>
+                      index === activeIndex ? "black" : "none",
+                    strokeWidth: ({ index }) => (index === activeIndex ? 3 : 0),
+                  },
+                  labels: { fill: "white", fontSize: 10, fontWeight: "bold" },
+                }}
+                events={[
+                  {
+                    target: "data",
+                    eventHandlers: {
+                      onPressIn: handlePiePress,
+                    },
+                  },
+                ]}
+                animate={{
+                  duration: 500,
+                }}
+              />
+            </TouchableOpacity>
+            <Text style={styles.textBase}>Legend:</Text>
+            {renderLegend()}
+          </>
+        </ScrollView>
       )}
-      <Text style={styles.textBase}>Legend:</Text>
-      {renderLegend()}
-    </ScrollView>
+    </View>
   );
 };
 
@@ -125,12 +182,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: PALETTE.neutral.darkGrey,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
   },
+
   chartContainer: {
     flex: 1,
     alignItems: "center",
@@ -154,15 +209,17 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   legendText: {
-    color: PALETTE.neutral.white,
+    color: PALETTE.neutral.lightGrey,
   },
   textBase: {
-    color: PALETTE.neutral.white,
+    color: PALETTE.neutral.lightGrey,
     marginBottom: 5,
-
     padding: 10,
     fontSize: 30,
     fontWeight: "bold",
+  },
+  noDataText: {
+    color: PALETTE.neutral.lightGrey,
   },
 });
 

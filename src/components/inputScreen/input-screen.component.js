@@ -19,15 +19,16 @@ const InputScreen = ({ screenType, screenName, isExpense }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [isDataReturned, setIsDataReturned] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
-
     const unsubscribe = startRealTimeListener(
       currentUser.uid,
       screenType,
       (newData) => {
         setData(newData);
+        setIsDataReturned(newData.length > 0);
         console.log(newData);
         setIsLoading(false);
       }
@@ -43,7 +44,7 @@ const InputScreen = ({ screenType, screenName, isExpense }) => {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       enabled={false}
     >
       <TouchableOpacity style={styles.addButton} onPress={toggleForm}>
@@ -63,7 +64,7 @@ const InputScreen = ({ screenType, screenName, isExpense }) => {
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={PALETTE.accent.warmOrange} />
         </View>
-      ) : (
+      ) : isDataReturned ? (
         <DataList
           data={data}
           uid={currentUser.uid}
@@ -71,6 +72,12 @@ const InputScreen = ({ screenType, screenName, isExpense }) => {
           onDelete={deleteUserData}
           isExpense={isExpense}
         />
+      ) : (
+        <View style={styles.loadingContainer}>
+          <Text
+            style={styles.noDataText}
+          >{`Please add some ${screenName}`}</Text>
+        </View>
       )}
     </KeyboardAvoidingView>
   );
@@ -102,6 +109,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     textAlign: "center",
     textAlignVertical: "center",
+  },
+  noDataText: {
+    color: PALETTE.neutral.darkGrey,
   },
 });
 

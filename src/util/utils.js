@@ -1,7 +1,10 @@
 import {
   EXPENSES_OPTIONS,
+  EXPENSES_SCREEN_NAME,
   INCOME_OPTIONS,
+  INCOME_SCREEN_NAME,
   SAVINGS_OPTIONS,
+  SAVINGS_SCREEN_NAME,
 } from "../../assets/static/constants";
 
 //Provides the right data for the drop down menu based on the screenType
@@ -33,6 +36,18 @@ export const userFriendlyErrorMessage = (error) => {
 //Tranform the sum entered by the user into an easily readable String to display
 export const formatMoney = (amount) =>
   amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+// Return screenName based on index. Used in GraphScreen when there is no data to show
+export const getScreenName = (index) => {
+  switch (index) {
+    case 0:
+      return INCOME_SCREEN_NAME;
+    case 1:
+      return SAVINGS_SCREEN_NAME;
+    case 2:
+      return EXPENSES_SCREEN_NAME;
+  }
+};
 
 //Transforms data so that it can be displyed on the pie chart
 export const parseData = (userData) => {

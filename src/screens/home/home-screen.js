@@ -5,6 +5,7 @@ import { AppContext } from "../../contexts/app/app-context";
 import PALETTE from "../../util/palette";
 import NavigationItem from "../../components/navigationItem/navigation-item.component";
 import NavigationList from "../../components/navigationItemList/navigation-item-list.component";
+import SegmentedControlTab from "react-native-segmented-control-tab";
 
 const HomeScreen = ({ navigation }) => {
   const { logout } = useContext(AuthContext);
@@ -15,7 +16,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.navigateText}>Navigate</Text> */}
+      <Button title="logout" onPress={logout} />
       <NavigationList navigation={navigation} />
     </View>
   );

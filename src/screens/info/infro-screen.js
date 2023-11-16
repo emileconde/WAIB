@@ -37,10 +37,10 @@ const InfoScreen = ({ navigation }) => {
         <TouchableOpacity
           style={styles.aboutButton}
           onPress={() => {
-            navigation.navigate("signup-screen");
+            navigation.navigate("about-screen");
           }}
         >
-          <Text style={[styles.textBase, styles.aboutText]}>About the us</Text>
+          <Text style={[styles.textBase, styles.aboutText]}>About Us</Text>
         </TouchableOpacity>
       </View>
     </BackgroundImage>
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   aboutText: {
-    color: PALETTE.primary.lightBlue,
+    color: PALETTE.secondary.softGreen,
   },
   aboutButton: {
     marginBottom: 20,

@@ -3,6 +3,7 @@ import InfoScreen from "../../../screens/info/infro-screen";
 import LoginScreen from "../../../screens/login/login-screen";
 import SignUpScreen from "../../../screens/signup/signup-screen";
 import PALETTE from "../../../util/palette";
+import AboutScreen from "../../../screens/about/about-screen";
 
 const AuthStack = createStackNavigator();
 
@@ -34,6 +35,11 @@ export const AuthStackNavigator = () => {
         name="signup-screen"
         component={SignUpScreen}
         options={{ title: "Sign Up" }}
+      />
+      <AuthStack.Screen
+        name="about-screen"
+        component={AboutScreen}
+        options={{ title: "About" }}
       />
     </AuthStack.Navigator>
   );
