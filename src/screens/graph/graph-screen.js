@@ -87,7 +87,9 @@ const GraphScreen = () => {
     }
 
     const fontSize = isActive ? 16 : 12; // Larger font for active segment
-    const color = isActive ? "#0D47A1" : PALETTE.neutral.darkGrey; // Different color for active segment
+    const color = isActive
+      ? PALETTE.primary.darkBlue
+      : PALETTE.neutral.darkGrey; // Different color for active segment
 
     return (
       <VictoryLabel

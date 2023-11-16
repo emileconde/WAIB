@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { AuthContext } from "../../contexts/auth/auth-context";
 import {
   View,
   Text,
@@ -8,10 +9,11 @@ import {
   Button,
 } from "react-native";
 
-const AboutScreen = () => {
+const ProfileScreen = () => {
+  const { logout } = useContext(AuthContext);
   return (
     <View>
-      <Button title="Logout" />
+      <Button title="logout" onPress={logout} />
     </View>
   );
 };
@@ -23,4 +25,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AboutScreen;
+export default ProfileScreen;

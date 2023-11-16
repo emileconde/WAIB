@@ -1,22 +1,11 @@
-import { useContext, useEffect } from "react";
-import { AuthContext } from "../../contexts/auth/auth-context";
-import { View, Text, StyleSheet, Button, FlatList } from "react-native";
-import { AppContext } from "../../contexts/app/app-context";
+import { View, StyleSheet } from "react-native";
+
 import PALETTE from "../../util/palette";
-import NavigationItem from "../../components/navigationItem/navigation-item.component";
 import NavigationList from "../../components/navigationItemList/navigation-item-list.component";
-import SegmentedControlTab from "react-native-segmented-control-tab";
 
 const HomeScreen = ({ navigation }) => {
-  const { logout } = useContext(AuthContext);
-
-  // useEffect(() => {
-  //   logout();
-  // }, []);
-
   return (
     <View style={styles.container}>
-      <Button title="logout" onPress={logout} />
       <NavigationList navigation={navigation} />
     </View>
   );

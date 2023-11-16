@@ -3,10 +3,8 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   TextInput,
   TouchableOpacity,
-  Pressable,
 } from "react-native";
 import { RadioButton } from "react-native-paper";
 import PALETTE from "../../util/palette";

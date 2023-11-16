@@ -1,12 +1,11 @@
 import React from "react";
-import { StyleSheet, StatusBar, View, Text } from "react-native";
+import { StyleSheet, StatusBar } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthProvider } from "./src/contexts/auth/auth-context";
 import AppNav from "./src/route/navigation/nav/app-nav";
 import { AppProvider } from "./src/contexts/app/app-context";
-import Toast, { BaseToast } from "react-native-toast-message";
+import Toast from "react-native-toast-message";
 import PALETTE from "./src/util/palette";
-import DatPicker from "./datPicker";
 
 export default function App() {
   return (
