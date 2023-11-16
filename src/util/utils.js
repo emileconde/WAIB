@@ -49,6 +49,36 @@ export const getScreenName = (index) => {
   }
 };
 
+/**Formats date chosen from the date picker in InputForm and stores it in Firestore.
+ * Not sure if this format will work for the CalendarView/Screen.
+ * Might need to create a separate function.
+ */
+export const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  let month = "" + (date.getMonth() + 1);
+  let day = "" + date.getDate();
+  const year = date.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [month, day, year].join("/");
+};
+
+/*Formats the date returned from firestore*/
+export const formatDateFromFirestoreTimestamp = (timestamp) => {
+  const date = new Date(timestamp.seconds * 1000);
+
+  let month = "" + (date.getMonth() + 1);
+  let day = "" + date.getDate();
+  const year = date.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [month, day, year].join("/");
+};
+
 //Transforms data so that it can be displyed on the pie chart
 export const parseData = (userData) => {
   const data = JSON.parse(JSON.stringify(userData));

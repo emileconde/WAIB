@@ -2,7 +2,11 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import PALETTE from "../../util/palette";
-import { capitalizeFirstLetter, formatMoney } from "../../util/utils";
+import {
+  capitalizeFirstLetter,
+  formatDateFromFirestoreTimestamp,
+  formatMoney,
+} from "../../util/utils";
 import {
   EXPENSES_SCREEN_TYPE,
   INCOME_SCREEN_TYPE,
@@ -15,6 +19,7 @@ const DataItem = ({
   amount,
   frequency,
   group,
+  date,
   want = "",
   screenType,
   onDelete,
@@ -73,6 +78,15 @@ const DataItem = ({
             style={styles.image}
           />
           <Text style={styles.text}>{capitalizeFirstLetter(group)}</Text>
+        </View>
+        <View style={styles.row}>
+          <Image
+            source={require("../../../assets/date-icon.png")}
+            style={styles.image}
+          />
+          <Text style={styles.text}>
+            {formatDateFromFirestoreTimestamp(date)}
+          </Text>
         </View>
       </View>
       <TouchableOpacity

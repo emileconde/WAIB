@@ -6,14 +6,17 @@ import {
   Button,
   TextInput,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import { RadioButton } from "react-native-paper";
 import PALETTE from "../../util/palette";
 import {
   capitalizeFirstLetter,
+  formatDate,
   provideDropDownOptions,
 } from "./../../util/utils";
 import RNPickerSelect from "react-native-picker-select";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const InputForm = ({ screenType, uid, addUserdata, isExpense = false }) => {
   const [type, setType] = useState("");
@@ -24,14 +27,11 @@ const InputForm = ({ screenType, uid, addUserdata, isExpense = false }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [group, setGroup] = useState(null);
+  const [date, setDate] = useState(new Date());
+  const [showPicker, setShowPicker] = useState(false);
   //This variable can be want or need. 'want' by default. Change if you're more creative.
   const [want, setWant] = useState("Want");
   const [dropdownKey, setDropdownKey] = useState(1);
-
-  const resetDropdown = () => {
-    setGroup(null);
-    setDropdownKey((prevKey) => prevKey + 1); // Increment the key to force remount
-  };
 
   const handleSave = async () => {
     if (type === "" || amount === "" || group == null) {
@@ -44,8 +44,8 @@ const InputForm = ({ screenType, uid, addUserdata, isExpense = false }) => {
     } else {
       const userData =
         isExpense == true
-          ? { type, amount, frequency, want, group }
-          : { type, amount, frequency, group };
+          ? { type, amount, frequency, want, group, date }
+          : { type, amount, frequency, group, date };
       addUserdata(uid, screenType, userData);
       setIsSuccessTextVisisble(true);
       setSuccessMessage(`${capitalizeFirstLetter(type)} successfuly saved.`);
@@ -57,9 +57,24 @@ const InputForm = ({ screenType, uid, addUserdata, isExpense = false }) => {
       setType("");
       setFrequency("weekly");
       setWant("want");
+      setDate(new Date());
     }
   };
 
+  const toggleDatePicker = () => {
+    setShowPicker(!showPicker);
+  };
+  const resetDropdown = () => {
+    setGroup(null);
+    setDropdownKey((prevKey) => prevKey + 1);
+  };
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    console.log(formatDate(currentDate));
+    setShowPicker(Platform.OS === "ios");
+    setDate(currentDate);
+  };
   return (
     <View style={styles.container} key={dropdownKey}>
       <TextInput
@@ -140,17 +155,12 @@ const InputForm = ({ screenType, uid, addUserdata, isExpense = false }) => {
           </RadioButton.Group>
         </View>
       ) : null}
-      {isErrorTextVisisble && (
-        <Text style={styles.errorText}>{errorMessage}</Text>
-      )}
-      {isSuccessTextVisisble && (
-        <Text style={styles.successText}>{successMessage}</Text>
-      )}
+
       <RNPickerSelect
         onValueChange={(value) => setGroup(value)}
         items={provideDropDownOptions(screenType)}
         placeholder={{
-          label: "Select a group...",
+          label: "Select group...",
           value: null,
           color: PALETTE.neutral.darkGrey,
         }}
@@ -159,6 +169,27 @@ const InputForm = ({ screenType, uid, addUserdata, isExpense = false }) => {
           inputAndroid: styles.groupDropdown,
         }}
       />
+      <TouchableOpacity
+        style={styles.dateDisplayContainer}
+        onPress={toggleDatePicker}
+      >
+        <Text>Select Date: </Text>
+        <Text style={styles.dateText}>{formatDate(date)}</Text>
+      </TouchableOpacity>
+      {showPicker && (
+        <DateTimePicker
+          mode="date"
+          display={Platform.OS === "ios" ? "default" : "spinner"}
+          value={date}
+          onChange={onChange}
+        />
+      )}
+      {isErrorTextVisisble && (
+        <Text style={styles.errorText}>{errorMessage}</Text>
+      )}
+      {isSuccessTextVisisble && (
+        <Text style={styles.successText}>{successMessage}</Text>
+      )}
       <TouchableOpacity style={styles.submitButton} onPress={handleSave}>
         <Text style={styles.submitText}>Submit</Text>
       </TouchableOpacity>
@@ -213,6 +244,15 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     alignSelf: "center",
     paddingRight: 30,
+  },
+  dateDisplayContainer: {
+    flexDirection: "row",
+    marginBottom: 10,
+  },
+  dateText: {
+    color: PALETTE.secondary.softGreen,
+    fontWeight: "bold",
+    fontSize: 15,
   },
 });
 
