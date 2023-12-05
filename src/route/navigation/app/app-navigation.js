@@ -51,7 +51,7 @@ export const AppStackNavigator = () => {
       <AppStack.Screen
         name="calendar-screen"
         component={CalendarScreen}
-        options={{ title: "Graph" }}
+        options={{ title: "Calendar" }}
       />
     </AppStack.Navigator>
   );
